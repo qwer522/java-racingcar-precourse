@@ -9,11 +9,8 @@ public class AutoRacingService {
 
     public void start() {
         RacingGroup racingGroup = inputCarName();
-
         int executeCount = inputExecuteCount();
-
         racingAndPrint(racingGroup, executeCount);
-
         winnerPrint(racingGroup);
     }
 

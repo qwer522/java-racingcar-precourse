@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class RacingGroup {
@@ -34,7 +35,7 @@ public class RacingGroup {
 
     public List<String> getWinnerName() {
         List<String> winner = new ArrayList<>();
-        Collections.sort(cars);
+        Collections.sort(cars, Comparator.comparingInt(Car::getMoveCount).reversed());
         for (Car car : cars) {
             winnerCondition(winner, car);
         }

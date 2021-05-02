@@ -1,6 +1,6 @@
 import exception.CarNameException;
 
-public class Car implements Comparable<Car> {
+public class Car {
 
     private final int MAX_NAME_LENGTH = 5;
     private final int DEFAULT_MIN_MOVE_NUMBER = 4;
@@ -42,11 +42,6 @@ public class Car implements Comparable<Car> {
         if (name.length() > MAX_NAME_LENGTH) {
             throw new CarNameException("자동자 이름이 유효한 글자 수를 초과하였습니다. 입력된 이름 글자 수 : " + name.length());
         }
-    }
-
-    @Override
-    public int compareTo(Car car) {
-        return Integer.compare(car.getMoveCount(), moveCount);
     }
 
 }
