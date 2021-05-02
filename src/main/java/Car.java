@@ -26,6 +26,14 @@ public class Car implements Comparable<Car> {
         }
     }
 
+    public String getMoveDraw() {
+        StringBuilder move = new StringBuilder();
+        for (int i = 0; i < moveCount; i++) {
+            move.append("-");
+        }
+        return move.toString();
+    }
+
     private void moveForward() {
         moveCount++;
     }

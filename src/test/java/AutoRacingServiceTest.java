@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AutoRacingServiceTest {
 
@@ -77,7 +76,7 @@ class AutoRacingServiceTest {
         for (int i = 0; i < RANDOM_VALIDATE_NUMBER; i++) {
             racingGroup.racingStart();
         }
-        assertThat(racingGroup.getWinner().size() > 0).isTrue();
+        assertThat(racingGroup.getWinnerName().size() > 0).isTrue();
     }
 
 }

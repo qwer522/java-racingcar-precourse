@@ -21,8 +21,19 @@ public class RacingGroup {
         }
     }
 
-    public List<Car> getWinner() {
-        List<Car> winner = new ArrayList<>();
+    public String getRacingDraw() {
+        StringBuilder racingResult = new StringBuilder();
+        for (Car car : this.cars) {
+            racingResult.append(car.getName());
+            racingResult.append(": ");
+            racingResult.append(car.getMoveDraw());
+            racingResult.append("\n");
+        }
+        return racingResult.toString();
+    }
+
+    public List<String> getWinnerName() {
+        List<String> winner = new ArrayList<>();
         Collections.sort(cars);
         for (Car car : cars) {
             winnerCondition(winner, car);
@@ -30,9 +41,9 @@ public class RacingGroup {
         return winner;
     }
 
-    private void winnerCondition(List<Car> winner, Car car) {
+    private void winnerCondition(List<String> winner, Car car) {
         if (cars.get(WINNER_INDEX).getMoveCount() == car.getMoveCount()) {
-            winner.add(car);
+            winner.add(car.getName());
         }
     }
 
