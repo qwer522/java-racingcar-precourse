@@ -13,26 +13,27 @@ class AutoRacingServiceTest {
     private final int MAX_CAR_SIZE = 5;
     private final int RANDOM_VALIDATE_NUMBER = 1000;
     private AutoRacingService autoRacingService;
+    private String carName;
+    private List<Car> cars;
+    private RacingGroup racingGroup;
 
     @BeforeEach
     public void setup() {
         autoRacingService = new AutoRacingService();
+        carName = getCarName();
+        cars = autoRacingService.convertToCarForInputValue(carName);
+        racingGroup = new RacingGroup(cars);
     }
 
     @Test
     public void 자동차_콤마_구분_정상_생성() {
-        String carName = "";
-        for (int i = 0; i < MAX_CAR_SIZE; i++) {
-            carName = carName + "car" + i + ",";
-        }
-        List<Car> cars = autoRacingService.convertToCarForInputValue(carName);
         assertThat(cars.size() == MAX_CAR_SIZE).isTrue();
     }
 
     @Test
     public void 자동차_유효_길이_초과() {
         try {
-            List<Car> cars = autoRacingService.convertToCarForInputValue(
+            autoRacingService.convertToCarForInputValue(
                     "car1,car2,car3,car4,car12345"
             );
         } catch (CarNameException e) {
@@ -55,21 +56,28 @@ class AutoRacingServiceTest {
             "모든 자동차는 0이상일거라고 가정하고 테스트 진행했습니다.")
     @Test
     public void 랜덤_전진() {
+        for (int i = 0; i < RANDOM_VALIDATE_NUMBER; i++) {
+            racingGroup.racingStart();
+        }
+        for (Car car : racingGroup.getCars()) {
+            assertThat(car.getMoveCount() > 0).isTrue();
+        }
+    }
+
+    private String getCarName() {
         String carName = "";
         for (int i = 0; i < MAX_CAR_SIZE; i++) {
             carName = carName + "car" + i + ",";
         }
-        List<Car> cars = autoRacingService.convertToCarForInputValue(carName);
+        return carName;
+    }
 
-        RacingGroup racingGroup = new RacingGroup(cars);
+    @Test
+    public void 승리자_선정() {
         for (int i = 0; i < RANDOM_VALIDATE_NUMBER; i++) {
             racingGroup.racingStart();
         }
-
-        for (Car car : cars) {
-            assertThat(car.getMoveCount() > 0).isTrue();
-        }
-
+        assertThat(racingGroup.getWinner().size() > 0).isTrue();
     }
 
 }
