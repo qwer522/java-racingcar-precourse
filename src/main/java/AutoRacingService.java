@@ -36,7 +36,7 @@ public class AutoRacingService {
         scanner = new Scanner(System.in);
     }
 
-    public List<Car> convertToCarForInputValue(String inputValue) {
+    private List<Car> convertToCarForInputValue(String inputValue) {
         List<Car> cars = new ArrayList<>();
         for (String carName : splitToCommaForInputValue(inputValue)) {
             cars.add(new Car(carName));

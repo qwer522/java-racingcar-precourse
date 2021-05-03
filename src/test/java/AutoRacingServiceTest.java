@@ -3,6 +3,8 @@ import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,10 +19,12 @@ class AutoRacingServiceTest {
     private RacingGroup racingGroup;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         autoRacingService = new AutoRacingService();
         carName = getCarName();
-        cars = autoRacingService.convertToCarForInputValue(carName);
+        Method method = autoRacingService.getClass().getDeclaredMethod("convertToCarForInputValue", String.class);
+        method.setAccessible(true);
+        cars = (List<Car>) method.invoke(autoRacingService, carName);
         racingGroup = new RacingGroup(cars);
     }
 
@@ -29,13 +33,19 @@ class AutoRacingServiceTest {
         assertThat(cars.size() == MAX_CAR_SIZE).isTrue();
     }
 
+    @Description("Method를 사용한 기능에서 밑에와 같은 Exception을 제외한 에러가 떨어지면 정상.")
     @Test
     public void 자동차_유효_길이_초과() {
         try {
-            autoRacingService.convertToCarForInputValue(
-                    "car1,car2,car3,car4,car12345"
-            );
+
+            Method method = autoRacingService.getClass().getDeclaredMethod("convertToCarForInputValue", String.class);
+            method.setAccessible(true);
+            method.invoke(autoRacingService, "car1,car2,car3,car4,car12345");
         } catch (CarNameException e) {
+            assertThat(true).isTrue();
+        } catch (InvocationTargetException | NoSuchMethodException e) {
+            assertThat(true).isTrue();
+        } catch (IllegalAccessException e) {
             assertThat(true).isTrue();
         } catch (Exception e) {
             assertThat(false).isTrue();
